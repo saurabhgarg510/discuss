@@ -28,11 +28,11 @@ class Home extends CI_Controller {
     }
     
     function checkSession() {
-        if (isset($_SESSION['user_type'])) {
-            if ($_SESSION['user_type'] == 'student') {
-                header('location: ' . base_url() . 'index.php/student');
+        if (isset($_SESSION['usertype'])) {
+            if ($_SESSION['usertype'] == 'user') {
+                header('location: ' . base_url() . 'index.php/user');
                 die();
-            } else if ($_SESSION['user_type'] == 'admin') {
+            } else if ($_SESSION['usertype'] == 'admin') {
                 header('location: ' . base_url() . 'index.php/admin');
                 die();
             }
@@ -73,16 +73,6 @@ class Home extends CI_Controller {
         $this->load->view('templates/footer');
     }
     
-    public function signIn($page = 'login') {
-        if (!file_exists(APPPATH . '/views/home/' . $page . '.php')) {
-            // Whoops, we don't have a page for that!
-            show_404();
-        }
-        $this->checkSession();
-        $data['title'] = 'Sign In';
-        $this->load->view('templates/header', $data);
-        $this->load->view('home/' . $page);
-    }
     public function contact($page = 'contact') {
         if (!file_exists(APPPATH . '/views/home/' . $page . '.php')) {
             // Whoops, we don't have a page for that!
@@ -94,6 +84,7 @@ class Home extends CI_Controller {
         $this->load->view('templates/footer');
         unset($_SESSION['stmt']);
     }
+    
     public function insertContact() {
         $data = $this->input->post();
         //print_r($data);
@@ -113,9 +104,9 @@ class Home extends CI_Controller {
         else
             $_SESSION['false_login'] += 1;
         $data['email'] = $this->input->post('email');
-        $data['password'] = $this->input->post('password');        
-        $data['password'] = hash('sha256', SALT.$data['password']);
-        $data['captcha'] = $this->input->post('captcha');
+        $data['password'] = $this->input->post('password');
+        $data['password'] = hash('sha512', SALT.$data['password']);
+/*        $data['captcha'] = $this->input->post('captcha');
         if ($data['captcha'] != '') {
             if ($_SESSION['code'] == $data['captcha'])
                 $flag = 1;
@@ -124,11 +115,13 @@ class Home extends CI_Controller {
         }
         else if ($_SESSION['false_login'] > 3)
             $flag = 0;
+ * 
+ */
         if ($flag == 1) {
             $this->load->model('Outer_model');
             $result = $this->Outer_model->validate_user($data);
-            if ($result == 'student') {
-                echo 'student';
+            if ($result == 'user') {
+                echo 'user';
                 unset($_SESSION['false_login']);
             } else if ($result == 'admin') {
                 echo 'admin';
@@ -138,6 +131,7 @@ class Home extends CI_Controller {
             }
         }
     }
+    
     public function forgotPassword($page = 'forgot') {
         if (!file_exists(APPPATH . '/views/home/' . $page . '.php')) {
             // Whoops, we don't have a page for that!
@@ -149,6 +143,7 @@ class Home extends CI_Controller {
         $this->load->view('home/' . $page);
         session_unset();
     }
+    
     public function checkEmail() {
         $this->load->helper('email');
         $email = $this->input->post('email');
@@ -168,6 +163,7 @@ class Home extends CI_Controller {
         $_SESSION['error'] = $error;
         redirect(base_url() . 'index.php/home/forgotPassword');
     }
+    
     function sendResetPasswordEmail($email, $name) {
         $email_code = sha1($email . $name);
         $to = $email;
@@ -190,6 +186,7 @@ class Home extends CI_Controller {
         $headers.="From:Hostel-J<developer@onlinehostelj.in>";
         mail($to, $subject, $message, $headers);
     }
+    
     public function resetPassword($email, $email_code) {
         if (!file_exists(APPPATH . '/views/home/reset.php')) {
             // Whoops, we don't have a page for that!
@@ -217,6 +214,7 @@ class Home extends CI_Controller {
         }
         session_unset();
     }
+    
     function updatePassword() {
         $email = $this->input->post('email');
         $email = $this->string_validate($email);
@@ -236,7 +234,7 @@ class Home extends CI_Controller {
                 $_SESSION['passerr'] = "Password is not valid. ";
             if ($pass == $repass && $_SESSION['matcherr'] == '' && $_SESSION['passerr'] == '') {
                 $salt = "thispasswordcannotbehacked";
-                $pass = hash('sha256', $salt . $pass);
+                $pass = hash('sha512', $salt . $pass);
                 $this->Outer_model->updatePass($email, $pass);
 		redirect(base_url() . 'index.php/home/sign_in');
             } else
@@ -246,12 +244,13 @@ class Home extends CI_Controller {
             redirect(base_url() . 'index.php/home/resetPassword/' . $email . '/' . $email_code);
         }
     }
+    
     public function logout() {
         if (!isset($_SESSION['id']))
             header('location: ' . base_url() . 'index.php/home');
         session_unset();
         session_destroy();
-        header('location: ' . base_url() . 'index.php/home');
+        header('location: ' . base_url());
     }
 }
 ?>

@@ -20,5 +20,6 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.fittext.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/wow.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/creative.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/login.js"></script>
 </body>
 </html>

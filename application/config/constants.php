@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | These global constants can be used anywhere in the application
 |
 */
-define('SALT','4Z8y2Ydxeczcc6$z');
+define('SALT','4Z8y2Ydxeczcc6z');
 /*
 |--------------------------------------------------------------------------
 | File and Directory Modes

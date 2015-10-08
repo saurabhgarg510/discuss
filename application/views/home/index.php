@@ -16,20 +16,20 @@
             <h4 class="modal-title">Sign In</h4>
         </div>
         <div class="modal-body">
-            <form role="form" action="<?php echo base_url(); ?>index.php/home/checkUser">
+            <form role="form" method="post">
                 <div class="form-group">
                     <label for="email">Email address:</label>
-                    <input type="email" class="form-control" id="email" placeholder="example@example.com">
+                    <input id="email" type="email" class="form-control" id="email" placeholder="example@example.com">
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password" class="form-control" id="password" placeholder="password">
+                    <input id="password" type="password" class="form-control" id="password" placeholder="password">
                 </div>
                 <div class="checkbox">
                     <label><input type="checkbox"> Remember me</label>
                 </div>
                 <div class="row text-center text-faded">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                    <button id="signin" type="button" class="btn btn-primary" onclick="val()">Submit</button>
                 <a href="<?php echo base_url(); ?>index.php/home/forgotPassword" class="btn btn-default">Forgot Password?</a>
                 </div>
             </form>
