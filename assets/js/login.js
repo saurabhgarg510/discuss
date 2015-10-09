@@ -44,8 +44,9 @@ function send(flag) {
                     window.location.assign('http://localhost/discuss/index.php/' + data);
                 }
                 else {
-                    alert("fail");
                     // TO DO 
+                     window.location.assign('http://localhost/discuss/');
+                     document.getElementById("sign").click();
                     // Failure on login response
                 }
             }

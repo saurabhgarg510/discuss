@@ -15,6 +15,30 @@ class User extends CI_Controller {
         header("Pragma: no-cache");
         session_start();
         session_regenerate_id(true);
+        $this->load->model('User_model');
+    }
+    
+    function format_date($str) {
+        $month = array(" ", "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec");
+        $y = explode(' ', $str);
+        $x = explode('-', $y[0]);
+        $date = "";
+        $m = (int) $x[1];
+        $m = $month[$m];
+        $st = array(1, 21, 31);
+        $nd = array(2, 22);
+        $rd = array(3, 23);
+        if (in_array($x[2], $st)) {
+            $date = $x[2] . 'st';
+        } else if (in_array($x[2], $nd)) {
+            $date .= $x[2] . 'nd';
+        } else if (in_array($x[2], $rd)) {
+            $date .= $x[2] . 'rd';
+        } else {
+            $date .= $x[2] . 'th';
+        }
+        $date .= ' ' . $m . ' ' . $x[0];
+        return $date;
     }
 
     function string_validate($str) {
@@ -48,9 +72,10 @@ class User extends CI_Controller {
             show_404();
         }
         $data['title'] = ucfirst("Welcome"); // Capitalize the first letter
+        $data['question']=  $this->User_model->getQuestions();
         $this->load->view('templates/user_header', $data);
-        $this->load->view('user/' . $page);
-        //    $this->load->view('templates/footer');
+        $this->load->view('user/' . $page, $data);
+        $this->load->view('templates/user_footer');
     }
 
 }

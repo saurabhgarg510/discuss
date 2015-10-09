@@ -1,6 +1,9 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
+
 class Home extends CI_Controller {
+
     public function __construct() {
         parent::__construct();
         header("X-XSS-Protection: 1 mode=block ");
@@ -13,20 +16,20 @@ class Home extends CI_Controller {
         session_start();
         session_regenerate_id(true);
     }
-    
+
     function string_validate($str) {
         $str = filter_var($str, FILTER_SANITIZE_STRING);
         $str1 = str_replace("%", "p", "$str");
         $str = $this->db->escape($str1);
         return str_replace("'", '', $str);
     }
-    
+
     function valid_pass($candidate) {
         if (!preg_match_all('$\S*(?=\S{6,})(?=\S*[a-z])(?=\S*[\d])\S*$', $candidate))
             return FALSE;
         return TRUE;
     }
-    
+
     function checkSession() {
         if (isset($_SESSION['usertype'])) {
             if ($_SESSION['usertype'] == 'user') {
@@ -38,7 +41,7 @@ class Home extends CI_Controller {
             }
         }
     }
-    
+
     public function developers($page = 'developers') {
         if (!file_exists(APPPATH . '/views/home/' . $page . '.php')) {
             // Whoops, we don't have a page for that!
@@ -49,7 +52,7 @@ class Home extends CI_Controller {
         $this->load->view('home/' . $page);
         $this->load->view('templates/footer');
     }
-    
+
     public function instructions($page = 'instruction') {
         if (!file_exists(APPPATH . '/views/home/' . $page . '.php')) {
             // Whoops, we don't have a page for that!
@@ -60,7 +63,7 @@ class Home extends CI_Controller {
         $this->load->view('home/' . $page);
         $this->load->view('templates/footer');
     }
-    
+
     public function index($page = 'index') {
         if (!file_exists(APPPATH . '/views/home/' . $page . '.php')) {
             // Whoops, we don't have a page for that!
@@ -72,7 +75,7 @@ class Home extends CI_Controller {
         $this->load->view('home/' . $page);
         $this->load->view('templates/footer');
     }
-    
+
     public function contact($page = 'contact') {
         if (!file_exists(APPPATH . '/views/home/' . $page . '.php')) {
             // Whoops, we don't have a page for that!
@@ -84,7 +87,7 @@ class Home extends CI_Controller {
         $this->load->view('templates/footer');
         unset($_SESSION['stmt']);
     }
-    
+
     public function insertContact() {
         $data = $this->input->post();
         //print_r($data);
@@ -97,6 +100,7 @@ class Home extends CI_Controller {
         $_SESSION['nm'] = $data['name'];
         redirect(base_url() . 'index.php/home/contact');
     }
+
     public function checkUser() {
         $flag = 1;
         if (!isset($_SESSION['false_login']))
@@ -105,18 +109,18 @@ class Home extends CI_Controller {
             $_SESSION['false_login'] += 1;
         $data['email'] = $this->input->post('email');
         $data['password'] = $this->input->post('password');
-        $data['password'] = hash('sha512', SALT.$data['password']);
-/*        $data['captcha'] = $this->input->post('captcha');
-        if ($data['captcha'] != '') {
-            if ($_SESSION['code'] == $data['captcha'])
-                $flag = 1;
-            else
-                $flag = 0;
-        }
-        else if ($_SESSION['false_login'] > 3)
-            $flag = 0;
- * 
- */
+        $data['password'] = hash('sha512', SALT . $data['password']);
+        /*        $data['captcha'] = $this->input->post('captcha');
+          if ($data['captcha'] != '') {
+          if ($_SESSION['code'] == $data['captcha'])
+          $flag = 1;
+          else
+          $flag = 0;
+          }
+          else if ($_SESSION['false_login'] > 3)
+          $flag = 0;
+         * 
+         */
         if ($flag == 1) {
             $this->load->model('Outer_model');
             $result = $this->Outer_model->validate_user($data);
@@ -131,7 +135,7 @@ class Home extends CI_Controller {
             }
         }
     }
-    
+
     public function forgotPassword($page = 'forgot') {
         if (!file_exists(APPPATH . '/views/home/' . $page . '.php')) {
             // Whoops, we don't have a page for that!
@@ -143,7 +147,7 @@ class Home extends CI_Controller {
         $this->load->view('home/' . $page);
         session_unset();
     }
-    
+
     public function checkEmail() {
         $this->load->helper('email');
         $email = $this->input->post('email');
@@ -163,7 +167,7 @@ class Home extends CI_Controller {
         $_SESSION['error'] = $error;
         redirect(base_url() . 'index.php/home/forgotPassword');
     }
-    
+
     function sendResetPasswordEmail($email, $name) {
         $email_code = sha1($email . $name);
         $to = $email;
@@ -186,7 +190,7 @@ class Home extends CI_Controller {
         $headers.="From:Hostel-J<developer@onlinehostelj.in>";
         mail($to, $subject, $message, $headers);
     }
-    
+
     public function resetPassword($email, $email_code) {
         if (!file_exists(APPPATH . '/views/home/reset.php')) {
             // Whoops, we don't have a page for that!
@@ -214,7 +218,7 @@ class Home extends CI_Controller {
         }
         session_unset();
     }
-    
+
     function updatePassword() {
         $email = $this->input->post('email');
         $email = $this->string_validate($email);
@@ -236,7 +240,7 @@ class Home extends CI_Controller {
                 $salt = "thispasswordcannotbehacked";
                 $pass = hash('sha512', $salt . $pass);
                 $this->Outer_model->updatePass($email, $pass);
-		redirect(base_url() . 'index.php/home/sign_in');
+                redirect(base_url() . 'index.php/home/sign_in');
             } else
                 redirect(base_url() . 'index.php/home/resetPassword/' . $email . '/' . $email_code);
         } else {
@@ -244,7 +248,7 @@ class Home extends CI_Controller {
             redirect(base_url() . 'index.php/home/resetPassword/' . $email . '/' . $email_code);
         }
     }
-    
+
     public function logout() {
         if (!isset($_SESSION['id']))
             header('location: ' . base_url() . 'index.php/home');
@@ -252,5 +256,7 @@ class Home extends CI_Controller {
         session_destroy();
         header('location: ' . base_url());
     }
+
 }
+
 ?>

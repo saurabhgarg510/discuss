@@ -1,15 +1,17 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
 class Outer_model extends CI_Model {
+
     public function __construct() {
         $this->load->database();
     }
+
     public function validate_user($data) {
         $query = "select * from login where email='" . $data['email'] . "' and password='" . $data['password'] . "'";
         $result = $this->db->query($query);
@@ -26,10 +28,10 @@ class Outer_model extends CI_Model {
             $_SESSION['contact'] = $row1->contact;
             $_SESSION['views'] = $row1->view;
             return $row1->usertype;
-        } 
-        else return 0;
+        } else
+            return '0';
     }
-    
+
     public function contact($data) {
         return $this->db->insert('contact', $data);
         /* 	$to=$_POST['email'];
@@ -43,7 +45,7 @@ class Outer_model extends CI_Model {
           $headers="From:".$_POST['name']."<".$_POST['email'].">";
           mail($to,$subject,$message,$headers); */
     }
-    
+
     function email_exists($email) {
         $result = $this->db->query("select fname,email from registration where email = '" . $email . "'");
         if ($result->num_rows() >= 1) {
@@ -51,7 +53,9 @@ class Outer_model extends CI_Model {
         } else
             return FALSE;
     }
+
     function updatePass($email, $pass) {
         $this->db->query("update login set pass = '" . $pass . "' where email = '" . $email . "'");
     }
+
 }

@@ -30,4 +30,13 @@ class User_model extends CI_Model {
         $this->db->update('mytable'); 
         
     }
+    
+    function getQuestions(){
+        $query=$this->db->query("select * from question where email='".$_SESSION['email']."'");
+        $data=array();
+        foreach($query->result_array() as $row){
+            array_push($data,$row);
+        }
+        return $data;
+    }
 }

@@ -4,18 +4,24 @@
             <h1>Discussion is an exchange of knowledge</h1>
             <hr>
             <p></p>
-            <a class="btn btn-default btn-xl" data-toggle="modal" data-target="#signin" data-backdrop="true">Sign In</a>
+            <a class="btn btn-default btn-xl" data-toggle="modal" data-target="#sign" data-backdrop="true">Sign In</a>
             <a class="btn btn-default btn-xl" href="<?php echo base_url(); ?>index.php/home/signup" data-backdrop="true">Sign Up</a>
         </div>
     </div>
 </header>
-<div id="signin" class="modal fade">
+<div id="sign" class="modal fade">
     <div class="modal-content col-lg-4 col-lg-offset-4 text-muted" style="top: 100px;">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Sign In</h4>
         </div>
         <div class="modal-body">
+            <?php if (isset($_SESSION['false_login'])) { ?>
+                <div class="alert alert-danger fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Email or password incorrect </strong>
+                </div>
+            <?php } ?>
             <form role="form" method="post">
                 <div class="form-group">
                     <label for="email">Email address:</label>
@@ -30,7 +36,7 @@
                 </div>
                 <div class="row text-center text-faded">
                     <button id="signin" type="button" class="btn btn-primary" onclick="val()">Submit</button>
-                <a href="<?php echo base_url(); ?>index.php/home/forgotPassword" class="btn btn-default">Forgot Password?</a>
+                    <a href="<?php echo base_url(); ?>index.php/home/forgotPassword" class="btn btn-default">Forgot Password?</a>
                 </div>
             </form>
         </div>
