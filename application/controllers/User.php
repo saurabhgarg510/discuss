@@ -100,6 +100,35 @@ class User extends CI_Controller {
         $this->load->view('templates/user_footer');
     }
     
+    public function question($qtitle, $qid, $page = 'viewQuestion') {
+        if (!file_exists(APPPATH . '/views/user/' . $page . '.php')) {
+            // Whoops, we don't have a page for that!
+            show_404();
+        }
+        $data['title'] = ucfirst("browse"); // Capitalize the first letter
+        $data['question']= $this->User_model->getQuestionData($qid);
+        $data['answer']= $this->User_model->getAnswerData($qid);
+        $this->load->view('templates/user_header', $data);
+        $this->load->view('user/' . $page, $data);
+        $this->load->view('templates/user_footer');
+    }
     
+    public function addQuestion() {
+        $data= $this->input->post();
+        if($data['title']==""){
+            echo "titleErr";
+        }
+        else if($data['cat']==""){
+            echo "catErr";
+        }
+        else if($data['ques']==""){
+            echo "quesErr";
+        }
+        else{
+            $this->User_model->insertQuestion($data['title'],$data['ques'],$data['cat']);            
+            echo "SUCCESS";
+        }
+    }
+
 
 }

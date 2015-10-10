@@ -36,10 +36,10 @@
                 <div class=" navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="#">Profile</a>
+                            <a href="<?php echo base_url().'index.php/user/profile' ?> ">Profile</a>
                         </li>
                         <li>
-                            <a href="#">Browse</a>
+                            <a href="<?php echo base_url().'index.php/user/browse' ?>">Browse</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url().'index.php/home/logout'?>">Logout</a>

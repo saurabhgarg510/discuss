@@ -5,9 +5,8 @@ class User_model extends CI_Model {
         $this->load->database();
     }
     
-    function insertQuestion($ques, $category){
-        $data=array('username'=>$_SESSION['email'],'question'=>$ques,'category'=>$category);
-        $this->db->insert('questions',$data);
+    function insertQuestion($title,$ques,$cat){
+        $this->db->query("insert into question (title,question,categories,email) values ('".$title."','".$ques."','".$cat."','".$_SESSION['email']."')");
     }
     
     function insertAnswer($ans){
@@ -33,6 +32,20 @@ class User_model extends CI_Model {
     
     function getQuestions(){
         $query=$this->db->query("select * from question where email='".$_SESSION['email']."'");
+        $data=array();
+        foreach($query->result_array() as $row){
+            array_push($data,$row);
+        }
+        return $data;
+    }
+    
+    function getQuestionData($qid){
+        $query=$this->db->query("select * from question where qid=$qid");
+        return $query->row_array();
+    }
+    
+    function getAnswerData($qid){
+        $query=$this->db->query("select * from answer where qid=$qid");
         $data=array();
         foreach($query->result_array() as $row){
             array_push($data,$row);

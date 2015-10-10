@@ -39,36 +39,60 @@
                 </div>
             </div>
         </div>
-        <!-- Blog Entries Column -->
         <div class="col-md-9">
-            <h1 class="page-header">
-                <small>My Questions</small>
-            </h1>
-            <?php
-            foreach ($question as $row) {
-                ?>
-                <h3>
-                    <a href="<?php echo base_url().'index.php/user/question/'.url_title($row['title'],'-').'/'.$row['qid']; ?>"><?php echo $row['title'] ?></a>
-                </h3>
-                <p>
-                    by <a href="#"><?php echo $_SESSION['name'] ?></a>&nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-time"></span> <?php echo date('h:i a jS M\'y ',strtotime($row['time'])); ?></p>
-                <p><?php echo $row['question'] ?></p>
-                <a class="btn btn-primary" href="<?php echo base_url().'index.php/user/question/'.url_title($row['title'],'-').'/'.$row['qid']; ?>">View Discussion <span class="glyphicon glyphicon-chevron-right"></span></a>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>
+                        <?php echo $question['title'] ?>
+                    </h3>
+                    <p>
+                        by <a href="#"><?php //TODO get asker name        ?></a>&nbsp;&nbsp;
+                        <span class="glyphicon glyphicon-time"></span> <?php echo date('h:i a jS M\'y ', strtotime($question['time'])); ?></p>
+                    <p><?php echo $question['question'] ?></p>
+                </div>
+                <div class="panel-body">
+                    <?php
+                    foreach ($answer as $row) {
+                        ?>
+                        <p><?php echo $row['answer'] ?></p>
+                        <p>
+                            by <a href="#"><?php //TODO get solver name        ?></a>&nbsp;&nbsp;
+                            <span class="glyphicon glyphicon-time"></span> <?php echo date('h:i a jS M\'y ', strtotime($row['time'])); ?></p>
+                        <hr>
+
+                    <?php } ?>
+                </div>
+            </div>
+            <div class="text-right">
+            <button class="btn btn-default" data-toggle="collapse" data-target="#answer">Write Answer</button>
+            </div>
+
+            <div id="answer" class="collapse ">
                 <hr>
-
-            <?php } ?>
-            <!-- Pager 
-            <ul class="pager">
-                <li class="previous">
-                    <a href="#">&larr; Older</a>
-                </li>
-                <li class="next">
-                    <a href="#">Newer &rarr;</a>
-                </li>
-            </ul>-->
-
+                <?php if(isset($_SESSION['afail'])){ ?>
+                <div class="alert alert-danger fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Answer empty or already exists! </strong>
+                </div>
+                <?php }
+                if(isset($_SESSION['asuccess'])){ ?>
+                <div class="alert alert-success fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Successfully added!</strong> 
+                </div>
+                <?php } ?>
+                <div class="text-muted">
+                    <form role="form" method="post">
+                        <label for="answer">Your Answer:</label>
+                        <textarea name="question" id="question" ></textarea><br>
+                        <div class="row text-right text-faded">
+                            <button type="submit" class="btn btn-primary" style="position: relative; right: 15px">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
+
 
         <!-- Blog Sidebar Widgets Column -->
         <div class="col-md-3">
@@ -127,18 +151,18 @@
 
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tinymce.min.js"></script>
 <script type="text/javascript">
-    tinymce.init({
-        selector: "textarea",
-        plugins: [
-            "advlist autolink lists link image charmap print preview anchor",
-            "searchreplace visualblocks code fullscreen",
-            "insertdatetime media table contextmenu paste"
-        ],
-        toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
-    });
+                                tinymce.init({
+                                    selector: "textarea",
+                                    plugins: [
+                                        "advlist autolink lists link image charmap print preview anchor",
+                                        "searchreplace visualblocks code fullscreen",
+                                        "insertdatetime media table contextmenu paste"
+                                    ],
+                                    toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                                });
 </script>
 <script>
-    function addQues(){
+    function addQues() {
         tinyMCE.triggerSave();
 //        alert($('#question').val());
         $.ajax({
@@ -157,7 +181,7 @@
                     }, 3000);
                 }
                 else {
-                    if (data === "quesErr" || data==="titleErr") {
+                    if (data === "quesErr" || data === "titleErr") {
                         $('#qfail').css('display', 'inline-block');
                     }
                     if (data === "catErr") {
