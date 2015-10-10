@@ -17,29 +17,6 @@ class User extends CI_Controller {
         session_regenerate_id(true);
         $this->load->model('User_model');
     }
-    
-    function format_date($str) {
-        $month = array(" ", "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec");
-        $y = explode(' ', $str);
-        $x = explode('-', $y[0]);
-        $date = "";
-        $m = (int) $x[1];
-        $m = $month[$m];
-        $st = array(1, 21, 31);
-        $nd = array(2, 22);
-        $rd = array(3, 23);
-        if (in_array($x[2], $st)) {
-            $date = $x[2] . 'st';
-        } else if (in_array($x[2], $nd)) {
-            $date .= $x[2] . 'nd';
-        } else if (in_array($x[2], $rd)) {
-            $date .= $x[2] . 'rd';
-        } else {
-            $date .= $x[2] . 'th';
-        }
-        $date .= ' ' . $m . ' ' . $x[0];
-        return $date;
-    }
 
     function string_validate($str) {
         $str = filter_var($str, FILTER_SANITIZE_STRING);
@@ -72,12 +49,12 @@ class User extends CI_Controller {
             show_404();
         }
         $data['title'] = ucfirst("Welcome"); // Capitalize the first letter
-        $data['question']=  $this->User_model->getQuestions();
+        $data['question'] = $this->User_model->getQuestions();
         $this->load->view('templates/user_header', $data);
         $this->load->view('user/' . $page, $data);
         $this->load->view('templates/user_footer');
     }
-    
+
     public function profile($page = 'profile') {
         if (!file_exists(APPPATH . '/views/user/' . $page . '.php')) {
             // Whoops, we don't have a page for that!
@@ -88,7 +65,7 @@ class User extends CI_Controller {
         $this->load->view('user/' . $page, $data);
         $this->load->view('templates/user_footer');
     }
-    
+
     public function browse($page = 'browse') {
         if (!file_exists(APPPATH . '/views/user/' . $page . '.php')) {
             // Whoops, we don't have a page for that!
@@ -99,36 +76,47 @@ class User extends CI_Controller {
         $this->load->view('user/' . $page, $data);
         $this->load->view('templates/user_footer');
     }
-    
+
     public function question($qtitle, $qid, $page = 'viewQuestion') {
         if (!file_exists(APPPATH . '/views/user/' . $page . '.php')) {
             // Whoops, we don't have a page for that!
             show_404();
         }
         $data['title'] = ucfirst("browse"); // Capitalize the first letter
-        $data['question']= $this->User_model->getQuestionData($qid);
-        $data['answer']= $this->User_model->getAnswerData($qid);
+        $data['question'] = $this->User_model->getQuestionData($qid);
+        $data['answer'] = $this->User_model->getAnswerData($qid);
         $this->load->view('templates/user_header', $data);
         $this->load->view('user/' . $page, $data);
         $this->load->view('templates/user_footer');
     }
-    
+
     public function addQuestion() {
-        $data= $this->input->post();
-        if($data['title']==""){
+        $data = $this->input->post();
+        if ($data['title'] == "") {
             echo "titleErr";
-        }
-        else if($data['cat']==""){
+        } else if ($data['cat'] == "") {
             echo "catErr";
-        }
-        else if($data['ques']==""){
+        } else if ($data['ques'] == "") {
             echo "quesErr";
-        }
-        else{
-            $this->User_model->insertQuestion($data['title'],$data['ques'],$data['cat']);            
+        } else {
+            $this->User_model->insertQuestion($data['title'], $data['ques'], $data['cat']);
             echo "SUCCESS";
         }
     }
 
+    public function addAnswer($qid) {
+        $data = $this->input->post();
+        $title=  $this->User_model->getQuestionData($qid);
+        if ($data['answer'] == "") {
+            $_SESSION['afail']=TRUE;
+            redirect(base_url().'index.php/user/question/'.url_title($title['title'], '-').'/'.$qid);
+        } 
+        else {
+            $this->User_model->insertAnswer($data['answer'], $qid);
+            $_SESSION['asuccess']=TRUE;
+            
+            redirect(base_url().'index.php/user/question/'.$title['title'].'/'.$qid);
+        }
+    }
 
 }

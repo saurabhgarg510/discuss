@@ -9,9 +9,8 @@ class User_model extends CI_Model {
         $this->db->query("insert into question (title,question,categories,email) values ('".$title."','".$ques."','".$cat."','".$_SESSION['email']."')");
     }
     
-    function insertAnswer($ans){
-        $data=array('username'=>$_SESSION['email'],'answer'=>$ans);
-        $this->db->insert('answers',$data);
+    function insertAnswer($ans,$qid){
+        $this->db->query("insert into answer (qid,answer,email) values ('".$qid."','".$ans."','".$_SESSION['email']."')");
     }
     
     function updateQuestion($ques, $category){
@@ -25,9 +24,16 @@ class User_model extends CI_Model {
     }
     
     function upvoteQuestion($qid){
-        $this->db->set('upvote', 'upvote+1', FALSE);
-        $this->db->update('mytable'); 
-        
+        $this->db->query('update question set upvotes = upvotes +1 where qid = "$qid"');
+    }
+    function downvoteQuestion($qid){
+        $this->db->query('update question set downvotes = downvotes +1 where qid = "$qid"');
+    }
+    function upvoteAnswer($qid){
+        $this->db->query('update answer set upvotes = upvotes +1 where aid = "$qid"');
+    }
+    function downvoteAnswer($qid){
+        $this->db->query('update answer set downvotes = downvotes +1 where aid = "$qid"');
     }
     
     function getQuestions(){

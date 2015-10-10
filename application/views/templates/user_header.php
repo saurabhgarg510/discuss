@@ -36,15 +36,17 @@
                 <div class=" navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="<?php echo base_url().'index.php/user/profile' ?> ">Profile</a>
+                            <a href="<?php echo base_url() . 'index.php/user/profile' ?> ">Profile</a>
                         </li>
                         <li>
-                            <a href="<?php echo base_url().'index.php/user/browse' ?>">Browse</a>
+                            <a href="<?php echo base_url() . 'index.php/user/browse' ?>">Browse</a>
                         </li>
                         <li>
-                            <a href="<?php echo base_url().'index.php/home/logout'?>">Logout</a>
+                            <a href="<?php echo base_url() . 'index.php/home/logout' ?>">Logout</a>
                         </li>
+                        <li><a href="" class="text-uppercase" data-toggle="modal" data-target="#ask" data-backdrop="true">Ask a Question <span class="glyphicon glyphicon-question-sign"></span></a></li>
                     </ul>
+                    
                 </div>
                 <!-- /.navbar-collapse -->
             </div>
