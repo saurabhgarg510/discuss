@@ -1,36 +1,35 @@
 <div class="container">
     <div class="row">
-        <div id="ask" class="modal fade">
+        <div id="ask" class="modal fade" role="dialog">
             <div class="modal-content col-lg-8 col-lg-offset-2 text-muted" style="top: 100px;">
                 <div class="modal-header">
-                    <?php if(isset($_SESSION['qfail'])) { ?>
-                    <div class="alert alert-danger fade in">
+<a href="#" class="close" data-dismiss="modal" aria-label="close">&times;</a>
+                    <div class="alert alert-danger fade in" id="fail" style="display: none">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong>Question already exists! </strong>
                     </div>
-                    <?php } ?>
-                    <?php if(isset($_SESSION['qwarn'])) { ?>
-                    <div class="alert alert-warning fade in">
+
+
+                    <div class="alert alert-warning fade in" id="cat" style="display: none">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong>Categories not correct</strong>
                     </div>
-                    <?php } ?>
-                    <?php if(isset($_SESSION['qsuccess'])) { ?>
-                    <div class="alert alert-success fade in">
+
+                    <div class="alert alert-success fade in" id="qsuccess" style="display: none">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong>Successfully added!</strong> 
                     </div>
-                    <?php } ?>
                     <h4 class="modal-title">Ask a Question</h4>
                 </div>
                 <div class="modal-body">
                     <form role="form" method="post">
                         <div class="form-group">
-                            <input id="ques" rows="10" required style="resize: vertical" class="form-control" placeholder="Type your question here">
+                            <input name="title" id="title" rows="10" required class="form-control" placeholder="Add title">
                         </div>
                         <div class="form-group">
-                            <textarea id="exp" rows="10" required style="resize: vertical" class="form-control" placeholder="Type the explanation here"></textarea>
+                            <input name="category" id="category" required class="form-control" placeholder="Add categories">
                         </div>
+                        <textarea name="question" id="question" required="true" placeholder="Enter your question here">Enter your question here</textarea><br>
                         <div class="row text-center text-faded">
                             <button type="button" class="btn btn-primary">Submit</button>
                             <button type="button" class="btn" data-dismiss="modal">Close</button>
@@ -48,18 +47,17 @@
             foreach ($question as $row) {
                 ?>
                 <h3>
-                    <a href="#"><?php echo $row['question'] ?></a>
+                    <a href="#"><?php echo $row['title'] ?></a>
                 </h3>
-                <p class="lead">
+                <p>
                     by <a href="#"><?php echo $_SESSION['name'] ?></a>
-                </p>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $row['time'] ?></p>
-                <p><?php echo $row['explanation'] ?></p>
+                <span class="glyphicon glyphicon-time"></span> Posted on <?php echo $row['time'] ?></p>
+                <p><?php echo $row['question'] ?></p>
                 <a class="btn btn-primary" href="#">View Discussion <span class="glyphicon glyphicon-chevron-right"></span></a>
                 <hr>
 
             <?php } ?>
-            <!-- Pager -->
+            <!-- Pager 
             <ul class="pager">
                 <li class="previous">
                     <a href="#">&larr; Older</a>
@@ -67,7 +65,7 @@
                 <li class="next">
                     <a href="#">Newer &rarr;</a>
                 </li>
-            </ul>
+            </ul>-->
 
         </div>
 
@@ -125,4 +123,16 @@
         </div>
     </div>
 </div>
-<hr>
+
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tinymce.min.js"></script>
+<script type="text/javascript">
+    tinymce.init({
+        selector: "textarea",
+        plugins: [
+            "advlist autolink lists link image charmap print preview anchor",
+            "searchreplace visualblocks code fullscreen",
+            "insertdatetime media table contextmenu paste"
+        ],
+        toolbar: "insertfile undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+    });
+</script>

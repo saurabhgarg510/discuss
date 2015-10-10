@@ -77,5 +77,29 @@ class User extends CI_Controller {
         $this->load->view('user/' . $page, $data);
         $this->load->view('templates/user_footer');
     }
+    
+    public function profile($page = 'profile') {
+        if (!file_exists(APPPATH . '/views/user/' . $page . '.php')) {
+            // Whoops, we don't have a page for that!
+            show_404();
+        }
+        $data['title'] = ucfirst("My Profile"); // Capitalize the first letter
+        $this->load->view('templates/user_header', $data);
+        $this->load->view('user/' . $page, $data);
+        $this->load->view('templates/user_footer');
+    }
+    
+    public function browse($page = 'browse') {
+        if (!file_exists(APPPATH . '/views/user/' . $page . '.php')) {
+            // Whoops, we don't have a page for that!
+            show_404();
+        }
+        $data['title'] = ucfirst("browse"); // Capitalize the first letter
+        $this->load->view('templates/user_header', $data);
+        $this->load->view('user/' . $page, $data);
+        $this->load->view('templates/user_footer');
+    }
+    
+    
 
 }
