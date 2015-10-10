@@ -42,7 +42,7 @@
                             <a href="#">Browse</a>
                         </li>
                         <li>
-                            <a href="#">Logout</a>
+                            <a href="<?php echo base_url().'index.php/home/logout'?>">Logout</a>
                         </li>
                     </ul>
                 </div>

@@ -5,10 +5,11 @@
             <hr>
             <p></p>
             <a class="btn btn-default btn-xl" data-toggle="modal" data-target="#sign" data-backdrop="true">Sign In</a>
-            <a class="btn btn-default btn-xl" href="<?php echo base_url(); ?>index.php/home/signup" data-backdrop="true">Sign Up</a>
+            <a class="btn btn-default btn-xl" href="<?php echo base_url(); ?>index.php/home/register" data-backdrop="true">Sign Up</a>
         </div>
     </div>
 </header>
+<!------------------------------- Sign in modal start-------------------------------------------------->
 <div id="sign" class="modal fade">
     <div class="modal-content col-lg-4 col-lg-offset-4 text-muted" style="top: 100px;">
         <div class="modal-header">
@@ -43,6 +44,7 @@
     </div>
 </div>
 
+<!--------------------------------------Sign in modal end----------------------------------------->
 <section class="bg-primary" id="about">
     <div class="container">
         <div class="row">

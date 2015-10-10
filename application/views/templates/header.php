@@ -38,7 +38,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand page-scroll" href="#page-top">Disquss</a>
+                    <a class="navbar-brand page-scroll" href="<?php echo base_url() ?>">Disquss</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
