@@ -77,7 +77,7 @@ class User_model extends CI_Model {
     }
 
     function getAnswerData($qid) {
-        $query = $this->db->query("select * from answer where qid=$qid");
+        $query = $this->db->query("select * from answer a, register r where a.qid=$qid and a.email=r.email");
         $data = array();
         foreach ($query->result_array() as $row) {
             array_push($data, $row);

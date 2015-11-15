@@ -59,7 +59,7 @@
                         ?>
                         <p><?php echo $row['answer'] ?></p>
                         <p>
-                            by <a href="#"><?php //TODO get solver name                  ?></a>&nbsp;&nbsp;
+                            by <a href="<?php echo base_url() . 'index.php/user/profile/' . $row['userid']; ?>"><?php echo $row['name']; ?></a>&nbsp;&nbsp;
                             <span class="glyphicon glyphicon-time"></span> <?php echo date('h:i a jS M\'y ', strtotime($row['time'])); ?>
                             &emsp;<a onclick="upans(<?php echo $row['aid'] ?>)"><span class="glyphicon glyphicon-thumbs-up"></span></a> <?php echo $row['upvotes'] ?>
                             &emsp;<a onclick="dnans(<?php echo $row['aid'] ?>)"><span class="glyphicon glyphicon-thumbs-down"></span></a> <?php echo $row['downvotes'] ?>

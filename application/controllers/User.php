@@ -87,6 +87,10 @@ class User extends CI_Controller {
         $data['title'] = ucfirst("browse"); // Capitalize the first letter
         $data['question'] = $this->User_model->getQuestionData($qid);
         $data['answer'] = $this->User_model->getAnswerData($qid);
+        $aid=array();
+        foreach($data['answer'] as $row){
+            array_push($aid, $row['aid']);
+        }
         $data['user'] = $this->User_model->getAskerName($data['question']['email']);
         $data['sidebar'] = $this->User_model->getNewQues();
         $this->load->view('templates/user_header', $data);
