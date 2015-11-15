@@ -11,6 +11,12 @@ class User_model extends CI_Model {
     function insertQuestion($title, $ques, $cat) {
         $this->db->query("insert into question (title,question,categories,email) values ('" . $title . "','" . $ques . "','" . $cat . "','" . $_SESSION['email'] . "')");
     }
+    
+    function insertCategory($data){
+        foreach($data as $cat){
+            $this->db->query("insert ignore into category (category) values ('".$cat."')");
+        }
+    }
 
     function insertAnswer($ans, $qid) {
         $this->db->query("insert into answer (qid,answer,email) values ('" . $qid . "','" . $ans . "','" . $_SESSION['email'] . "')");

@@ -4,7 +4,7 @@
         <div class="input-group col-lg-12">
             <form method="post" action="<?php echo base_url() . 'index.php/user/search'; ?>">
                 <span class="input-group-bt">
-                    <div style=" z-index: 2">
+                    <div style="position: relative; margin-right: 35px; z-index: 2">
                         <input type="text" class="form-control" name="query" id="query">
                     </div>
                     <button class="btn btn-default" type="submit" style="position: relative; float: right; top: -34px; z-index: 100">
