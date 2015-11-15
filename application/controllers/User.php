@@ -50,8 +50,10 @@ class User extends CI_Controller {
         }
         $data['title'] = ucfirst("Welcome"); // Capitalize the first letter
         $data['question'] = $this->User_model->getQuestions();
+        $data['sidebar'] = $this->User_model->getNewQues();
         $this->load->view('templates/user_header', $data);
         $this->load->view('user/' . $page, $data);
+        $this->load->view('user/sidebar', $data);
         $this->load->view('templates/user_footer');
     }
 
@@ -85,8 +87,11 @@ class User extends CI_Controller {
         $data['title'] = ucfirst("browse"); // Capitalize the first letter
         $data['question'] = $this->User_model->getQuestionData($qid);
         $data['answer'] = $this->User_model->getAnswerData($qid);
+        $data['user'] = $this->User_model->getAskerName($data['question']['email']);
+        $data['sidebar'] = $this->User_model->getNewQues();
         $this->load->view('templates/user_header', $data);
         $this->load->view('user/' . $page, $data);
+        $this->load->view('user/sidebar', $data);
         $this->load->view('templates/user_footer');
     }
 
@@ -106,17 +111,47 @@ class User extends CI_Controller {
 
     public function addAnswer($qid) {
         $data = $this->input->post();
-        $title=  $this->User_model->getQuestionData($qid);
+        $title = $this->User_model->getQuestionData($qid);
         if ($data['answer'] == "") {
-            $_SESSION['afail']=TRUE;
-            redirect(base_url().'index.php/user/question/'.url_title($title['title'], '-').'/'.$qid);
-        } 
-        else {
+            $_SESSION['afail'] = TRUE;
+            redirect(base_url() . 'index.php/user/question/' . url_title($title['title'], '-') . '/' . $qid);
+        } else {
             $this->User_model->insertAnswer($data['answer'], $qid);
-            $_SESSION['asuccess']=TRUE;
-            
-            redirect(base_url().'index.php/user/question/'.$title['title'].'/'.$qid);
+            $_SESSION['asuccess'] = TRUE;
+
+            redirect(base_url() . 'index.php/user/question/' . url_title($title['title'], '-') . '/' . $qid);
         }
+    }
+
+    function upques($qid) {
+        $flag = $this->User_model->checkQvote($qid);
+        if ($flag === TRUE) {
+            $this->User_model->upvoteQuestion($qid);
+            echo "success";
+        }
+    }
+
+    function dnques() {
+        $qid = $this->input->post("qid");
+        if ($qid) {
+            $flag = $this->User_model->checkQvote($qid);
+            if ($flag === TRUE) {
+                $this->User_model->downvoteQuestion($qid);
+                echo "success";
+            }
+        }
+    }
+
+    public function search() {
+        $query = $this->input->post("query");
+        $query = str_replace(" ", "%", $query);
+        $query = "%" . $query . "%";
+        $data['result'] = $this->User_model->getSearch($query);
+        $data['sidebar'] = $this->User_model->getNewQues();
+        $this->load->view('templates/user_header', $data);
+        $this->load->view('user/search', $data);
+        $this->load->view('user/sidebar', $data);
+        $this->load->view('templates/user_footer');
     }
 
 }

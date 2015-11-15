@@ -46,7 +46,7 @@
                         </li>
                         <li><a href="" class="text-uppercase" data-toggle="modal" data-target="#ask" data-backdrop="true">Ask a Question <span class="glyphicon glyphicon-question-sign"></span></a></li>
                     </ul>
-                    
+
                 </div>
                 <!-- /.navbar-collapse -->
             </div>

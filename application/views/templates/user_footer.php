@@ -23,7 +23,7 @@
 //        alert($('#question').val());
         $.ajax({
             type: 'post',
-            url: 'http://localhost/discuss/index.php/user/addQuestion',
+            url: '<?php echo base_url(); ?>index.php/user/addQuestion',
             data: {
                 title: $("#title").val(),
                 cat: $("#category").val(),
@@ -33,7 +33,7 @@
                 if (data === "SUCCESS") {
                     $('#qsuccess').css('display', 'inline-block');
                     setTimeout(function() {
-                        window.location.href = "http://localhost/discuss/index.php/user/"
+                        window.location.href = "<?php echo base_url(); ?>index.php/user/"
                     }, 3000);
                 }
                 else {
@@ -47,6 +47,45 @@
             }
         });
     }
+    
+    function upques(Qid) {
+        $.ajax({
+            type: 'post',
+            url: '<?php echo base_url(); ?>index.php/user/upques/Qid',
+            success: function(data) {
+                if (data !== "success") {
+                    alert("success");
+                    //document.getElementById(qid).value += 1;
+                }
+                else{
+                    alert("fail");
+                    //dfghn
+                }
+            }
+        });
+    }
+
+    function dnques(qid) {
+        $.ajax({
+            type: 'post',
+            url: 'http://localhost/discuss/index.php/user/dnques/',
+            data: {
+                qid: qid
+            },
+            success: function(data) {
+                if (data !== "success") {
+                    alert("success");
+                    //document.getElementById(qid).value += 1;
+                }
+                else{
+                    alert("fail");
+                    //dfghn
+                }
+            }
+        });
+    }
+
+    
 </script>
 <script>
     $(document).ready(function() {
